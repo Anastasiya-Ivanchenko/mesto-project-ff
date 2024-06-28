@@ -15,10 +15,11 @@ function createCard(elementName, elementLink, deleteCardFunction) {
   cardButtonDelete.addEventListener('click', deleteCardFunction);
 
   // @todo: Вывести карточки на страницу
-  containerCard.append(cardElement);
+  return cardElement;
 }
 initialCards.forEach((element) => {
   const card = createCard(element.name, element.link, deleteCard);
+  containerCard.append(card);
 });
 
 // @todo: Функция удаления карточки

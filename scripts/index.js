@@ -1,3 +1,7 @@
+
+// ПРОШУ ПРОЩЕНИЯ, НЕ ЗАПУШИЛА ИЗМЕНЕНИЯ...
+
+
 // @todo: Темплейт карточки
 const containerCard = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;

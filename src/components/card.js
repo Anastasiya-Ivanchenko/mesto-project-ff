@@ -1,5 +1,3 @@
-import { cardTemplate } from "../scripts/index.js";
-
 export function createCard(
     elementName,
     elementLink,
@@ -7,6 +5,7 @@ export function createCard(
     openImage,
     likeCardFunction
   ) {
+    const cardTemplate = document.querySelector("#card-template").content;
     const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
     const cardImage = cardElement.querySelector(".card__image");
     const cardTitle = cardElement.querySelector(".card__title");

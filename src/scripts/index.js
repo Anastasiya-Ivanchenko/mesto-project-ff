@@ -4,19 +4,16 @@ import "../components/modal.js";
 import "../components/card.js";
 
 import initialCards from "../components/cards.js";
-import { openModal, closeModal, addCloseByOverlayClick } from "../components/modal.js";
+import { openModal, closeModal, addCloseByOverlayClick, closeByEscape } from "../components/modal.js";
 import { createCard, deleteCard, likeCard } from "../components/card.js";
 
 // @todo: Темплейт карточки
 
 const containerCard = document.querySelector(".places__list");
 
-// export в cards.js
-export const cardTemplate = document.querySelector("#card-template").content;
-
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
-const editForm = document.querySelector(".popup_type_edit");
+const editPopup = document.querySelector(".popup_type_edit");
 const popupNewCards = document.querySelector(".popup_type_new-card");
 
 // export в modal.js
@@ -30,7 +27,7 @@ const newCardNameInput = newCardForm.querySelector(
 );
 const newCardLinkInput = newCardForm.querySelector(".popup__input_type_url");
 
-const formElement = document.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
+const formElement = editPopup.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
 
 const nameInput = document.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
 const jobInput = document.querySelector(".popup__input_type_description"); // Воспользуйтесь инструментом .querySelector()
@@ -52,7 +49,7 @@ initialCards.forEach((element) => {
 // @todo: Открытие модального окна "Редактирование профиля"
 editButton.addEventListener("click", (evt) => {
   // @todo: Редактирование профиля
-  openModal(editForm);
+  openModal(editPopup);
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
 });
@@ -60,24 +57,36 @@ editButton.addEventListener("click", (evt) => {
 //@todo: Открытие модального окна "Новое место"
 addButton.addEventListener("click", () => openModal(popupNewCards));
 
-export function openImage(link, name) {
+function openImage(link, name) {
   // @todo: Открыть изображение
   imagePopup.src = link;
   imageCaption.alt = name;
   imageCaption.textContent = name;
 
   popupImage.classList.add("popup_is-opened");
+
+  document.addEventListener("keydown", closeByEscape);
 };
 
+ // @todo: Закрытие модального окна по клику на крестик
+ const closeButtons = document.querySelectorAll(".popup__close");
+
+ closeButtons.forEach((button) => {
+   button.addEventListener("click", () => {
+     // Находим ближайший попап к кнопке
+     const popup = button.closest(".popup");
+     closeModal(popup);
+   });
+ });
 
 //Добавляем обработчик для каждого попапа
-addCloseByOverlayClick(editForm);
+addCloseByOverlayClick(editPopup);
 addCloseByOverlayClick(popupNewCards);
 addCloseByOverlayClick(popupImage);
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
   // Так мы можем определить свою логику отправки.
   // О том, как это делать, расскажем позже.
@@ -100,7 +109,7 @@ function handleFormSubmit(evt) {
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener("submit", handleFormSubmit);
+formElement.addEventListener("submit", handleProfileFormSubmit);
 
 // Обработчик отправки формы добавления новой карточки
 newCardForm.addEventListener("submit", (evt) => {

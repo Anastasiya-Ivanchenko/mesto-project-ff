@@ -21,8 +21,6 @@ export function closeModal(popup) {
       }
     });
   };
-
-//   //@todo: Закрытие модального окна по кнопке ESC
 // document.addEventListener("keydown", (evt) => {
 //     if (evt.key === "Escape") {
 //       const popupIsOpened = document.querySelector(".popup_is-opened");
@@ -31,8 +29,8 @@ export function closeModal(popup) {
 //       }
 //     }
 //   });
-
-  export function closeByEscape(event) {
+// @todo : Закрытие модального окна по Escape
+   function closeByEscape(event) {
     if(event.key === 'Escape') {
        closeModal(document.querySelector('.popup_is-opened'));
     }

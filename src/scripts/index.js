@@ -2,9 +2,10 @@ import "../pages/index.css"; // добавили главный файл сти�
 import "../components/cards.js";
 import "../components/modal.js";
 import "../components/card.js";
+import "../components/validation.js";
 
 import initialCards from "../components/cards.js";
-import { openModal, closeModal, addCloseByOverlayClick, closeByEscape } from "../components/modal.js";
+import { openModal, closeModal, addCloseByOverlayClick } from "../components/modal.js";
 import { createCard, deleteCard, likeCard } from "../components/card.js";
 
 // @todo: Темплейт карточки
@@ -16,21 +17,18 @@ const addButton = document.querySelector(".profile__add-button");
 const editPopup = document.querySelector(".popup_type_edit");
 const popupNewCards = document.querySelector(".popup_type_new-card");
 
-// export в modal.js
-export const popupImage = document.querySelector(".popup_type_image");
-export const imagePopup = popupImage.querySelector(".popup__image");
-export const imageCaption = popupImage.querySelector(".popup__caption");
+const popupImage = document.querySelector(".popup_type_image");
+const imagePopup = popupImage.querySelector(".popup__image");
+const imageCaption = popupImage.querySelector(".popup__caption");
 
 const newCardForm = popupNewCards.querySelector(".popup__form");
-const newCardNameInput = newCardForm.querySelector(
-  ".popup__input_type_card-name"
-);
+const newCardNameInput = newCardForm.querySelector(".popup__input_type_card-name");
 const newCardLinkInput = newCardForm.querySelector(".popup__input_type_url");
 
-const formElement = editPopup.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
+const formElement = editPopup.querySelector(".popup__form");
 
-const nameInput = document.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
-const jobInput = document.querySelector(".popup__input_type_description"); // Воспользуйтесь инструментом .querySelector()
+const nameInput = document.querySelector(".popup__input_type_name"); 
+const jobInput = document.querySelector(".popup__input_type_description"); 
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
@@ -63,9 +61,7 @@ function openImage(link, name) {
   imageCaption.alt = name;
   imageCaption.textContent = name;
 
-  popupImage.classList.add("popup_is-opened");
-
-  document.addEventListener("keydown", closeByEscape);
+  openModal(popupImage);
 };
 
  // @todo: Закрытие модального окна по клику на крестик

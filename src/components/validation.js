@@ -1,27 +1,76 @@
-// включение валидации вызовом enableValidation
-// все настройки передаются при вызове
+export function enableValidation(settings) {
+  const formList = Array.from(document.querySelectorAll(settings.formSelector));
+  formList.forEach(formElement => {
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement, settings);
+  });
+}
 
-// enableValidation({
-//     formSelector: '.popup__form',
-//     inputSelector: '.popup__input',
-//     submitButtonSelector: '.popup__button',
-//     inactiveButtonClass: 'popup__button_disabled',
-//     inputErrorClass: 'popup__input_type_error',
-//     errorClass: 'popup__error_visible'
-//   });
+// Функция для показа ошибки
+function showErrorMessage(formElement, inputElement, errorMessage, settings) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add(settings.inputErrorClass);
+  errorElement.classList.add(settings.errorClass);
+  errorElement.textContent = errorMessage;
+}
 
-{/* <form class="form" novalidate>
-  <input class="form__input" type="url" placeholder="Адрес" required>
-  <button class="form__submit">Войти</button>
-</form>  */}
+// Функция для скрытия ошибки
+function hideErrorMessage(formElement, inputElement, settings) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove(settings.inputErrorClass);
+  errorElement.classList.remove(settings.errorClass);
+  errorElement.textContent = '';
+}
 
-// const popupForm = document.querySelector('.popup__form');
-// const popupInput = popupForm.querySelector('.popup__input');
+// Функция для проверки валидности поля
+function checkInputValidity(formElement, inputElement, settings) {
+  if(inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } else {
+    inputElement.setCustomValidity('');
+  }
+  
+  if(!inputElement.validity.valid) {
+    showErrorMessage(formElement, inputElement, inputElement.validationMessage, settings);
+  } else {
+    hideErrorMessage(formElement, inputElement, settings);
+  }
+} 
 
-// popupInput.addEventListener('input', function (evt) {
-//     // Выведем в консоль значение свойства validity.valid поля ввода, 
-//     // на котором слушаем событие input
-//     console.log(evt.target.validity.valid);
-//   }); 
+// Функция для переключения состояния кнопки отправки
+function toggleButtonState(inputList, buttonElement, settings) {
+  const hasInvalidInput = inputList.some(inputElement => !inputElement.validity.valid);
+  if (hasInvalidInput) {
+    buttonElement.classList.add(settings.inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove(settings.inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+}
 
+// Установка обработчиков событий на поля ввода
+function setEventListeners(formElement, settings) {
+  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, settings);
+  
+  inputList.forEach(inputElement => {
+    inputElement.addEventListener('input', function () {
+      checkInputValidity(formElement, inputElement, settings);
+      toggleButtonState(inputList, buttonElement, settings);
+    });
+  });
+}
 
+export function clearValidation(formElement, settings) {
+  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector)
+  );
+  const submitButton = formElement.querySelector(settings.submitButtonSelector);
+  inputList.forEach((inputElement) => {
+    hideErrorMessage(formElement, inputElement, settings);
+  });
+  toggleButtonState(inputList, submitButton, settings);
+}

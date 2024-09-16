@@ -14,6 +14,39 @@
   margin-top: 48px;
 }
 
+.popup__button_disabled {
+  background: rgba(255, 255, 255);
+  font-family: 'Inter Regular', 'Arial', sans-serif;
+  cursor: default;
+  color: #000;
+  opacity: 0.2;
+  border: #000 1px solid;
+  border-radius: 2px;
+}
+
+.popup__button_disabled:hover {
+  background: rgba(0, 0, 0, 0.8);
+  cursor: default;
+  color: #fff;
+  font-family: 'Inter Regular', 'Arial', sans-serif;
+}
+
+@media screen and (max-width: 568px) {
+  .popup__button {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+.popup__button:focus {  
+  outline: none;
+}
+
+.popup__button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
 .popup__button:hover {
   background: rgba(0, 0, 0, 0.8);
   cursor: pointer;

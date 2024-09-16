@@ -21,12 +21,10 @@
   когда введённые данные некорректны */
 }
 
-.popup__input-error_active {
-  display: block;
-}
 
-.popup__input-error {
-  display: none;
+.popup__error_visible {
+  font-family: 'Inter Regular', 'Arial', sans-serif;
+  display: block;
   color: red;
   font-size: 12px;
   line-height: 15px;
